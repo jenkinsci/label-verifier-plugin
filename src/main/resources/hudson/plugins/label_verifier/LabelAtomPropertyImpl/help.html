@@ -1,0 +1,18 @@
+<div>
+    Whenever a node comes online that claims to have this label, verify that that is correct.
+
+    <p>
+    Because labels are configured manually, it is possible for assigned labels
+    to get out of sync with the reality in the slave machines. This kind of error can be typically
+    only detected by having some builds fail, or worse, it can go completely unnoticed.
+
+    <p>
+    By checking this checkbox, Hudson will programmatically perform check(s) whenever
+    a node becomes online that claims to have this label. The actual check logic is extensible
+    &mdash; you can write/install plugins to expand the types of checks available.
+
+    <p>
+    When one of the configured checks fail, the node will not become online. The administrator
+    will have to go in and reconfigure the label assignment before the said node can be used
+    by Hudson for builds.
+</div>

@@ -1,0 +1,16 @@
+<div>
+  Runs a shell script (defaults to <tt>sh</tt>, but this is configurable) to verify that this label assignment
+  is correct. If the script exits with non-zero, the label is considered invalid, and the slave will fail
+  to become online.
+
+  <p>
+  The remote FS root of the node will be the working directory for the script.
+  If your shell script has no header line like <tt>#!/bin/sh</tt> &mdash;, then the shell configured
+  system-wide will be used, but you can also use the header line to write script in another language
+  (like <tt>#!/bin/perl</tt>) or control the options that shell uses.
+
+  <p>
+  By default, the shell will be invoked with the "-ex" option. So all of the commands are printed before being executed,
+  and the script is considered a failure if any of the commands exits with a non-zero exit code. Again, add the
+  <tt>#!/bin/...</tt> line to change this behavior.
+</div>
