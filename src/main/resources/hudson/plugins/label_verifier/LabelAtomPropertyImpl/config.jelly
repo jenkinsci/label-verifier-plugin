@@ -28,7 +28,7 @@ THE SOFTWARE.
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
   <f:block>
-    <f:hetero-list name="verifies" items="${it.verifiers}" descriptors="${descriptor.getVerifierDescriptors()}"
+    <f:hetero-list name="verifiers" items="${instance.verifiers}" descriptors="${descriptor.getVerifierDescriptors()}"
             addCaption="${%Add Verifier}" deleteCaption="${%Delete Verifier}"/>
   </f:block>
 </j:jelly>
