@@ -34,11 +34,12 @@ public class ShellScriptVerifier extends LabelVerifier {
         FilePath script = shell.createScriptFile(root);
         shell.buildCommandLine(script);
 
+        listener.getLogger().println("Validating the label '"+label.getName()+"'");
         int r = root.createLauncher(listener).launch().cmds(shell.buildCommandLine(script))
                 .envs(Collections.singletonMap("LABEL",label.getName()))
                 .stdout(listener).pwd(root).join();
         if (r!=0)
-            throw new AbortException("The script failed. Label "+label.getName()+" is refused.");
+            throw new AbortException("The script failed. Label '"+label.getName()+"' is refused.");
     }
 
     @Extension
