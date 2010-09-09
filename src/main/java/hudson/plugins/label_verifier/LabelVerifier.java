@@ -6,7 +6,7 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Computer;
 import hudson.model.Node;
 import hudson.model.TaskListener;
-import hudson.model.label.LabelAtom;
+import hudson.model.labels.LabelAtom;
 import hudson.remoting.Channel;
 
 import java.io.IOException;

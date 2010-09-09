@@ -4,7 +4,7 @@ import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Computer;
 import hudson.model.TaskListener;
-import hudson.model.label.LabelAtom;
+import hudson.model.labels.LabelAtom;
 import hudson.remoting.Channel;
 import hudson.slaves.ComputerListener;
 
