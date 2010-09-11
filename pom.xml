@@ -9,7 +9,7 @@
   </parent>
   
   <artifactId>label-verifier</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
   <name>Hudson Label Verifier plugin</name>
   <url>http://wiki.hudson-ci.org/display/HUDSON/Label+Verifier+Plugin</url>
@@ -47,12 +47,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies-->
-
-  <scm>
-    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/label-verifier-1.0</connection>
-    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/label-verifier-1.0</developerConnection>
-    <url>https://hudson.dev.java.net/source/browse/hudson/tags/label-verifier-1.0</url>
-  </scm>
 </project>
 
 
