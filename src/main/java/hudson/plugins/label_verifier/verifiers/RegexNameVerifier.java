@@ -16,7 +16,7 @@ import java.util.regex.PatternSyntaxException;
 import org.kohsuke.stapler.QueryParameter;
 
 /**
- *
+ * Verifies the computer name by a regular expression.
  * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
  */
 public class RegexNameVerifier extends LabelVerifier  {
@@ -50,14 +50,14 @@ public class RegexNameVerifier extends LabelVerifier  {
     public static class DescriptorImpl extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return "Verify By Regular Expression against the computer name";
+            return "Verify computer name by a regular expression";
         }
         
         public FormValidation doCheckRegexExpression(@QueryParameter String regexExpression) {
             try {
                 Pattern.compile(regexExpression);
             } catch (PatternSyntaxException exception) {
-                return FormValidation.error(exception.getDescription()+"\n. Restriction will be ignored");
+                return FormValidation.error(exception.getDescription()+"\nRestriction will be ignored");
             }
             return FormValidation.ok();
         }
