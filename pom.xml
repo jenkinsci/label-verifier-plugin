@@ -2,17 +2,24 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jvnet.hudson.plugins</groupId>
+    <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.376</version>
-    <relativePath>../pom.xml</relativePath>
+    <version>1.424</version>
   </parent>
   
   <artifactId>label-verifier</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
-  <name>Hudson Label Verifier plugin</name>
-  <url>http://wiki.hudson-ci.org/display/HUDSON/Label+Verifier+Plugin</url>
+  <name>Jenkins Label Verifier plugin</name>
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/Label+Verifier+Plugin</url>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
