@@ -3,6 +3,7 @@
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
   <f:block>
     <f:hetero-list name="verifiers" items="${instance.verifiers}" descriptors="${descriptor.getVerifierDescriptors()}"
-            addCaption="${%Add Verifier}" deleteCaption="${%Delete Verifier}"/>
+            addCaption="${%Add Verifier}" deleteCaption="${%Delete Verifier}"
+            hasHeader="true" />
   </f:block>
 </j:jelly>
