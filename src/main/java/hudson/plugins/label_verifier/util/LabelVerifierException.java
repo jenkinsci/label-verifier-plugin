@@ -4,6 +4,8 @@
  */
 package hudson.plugins.label_verifier.util;
 
+import hudson.plugins.label_verifier.LabelVerifier;
+import hudson.plugins.label_verifier.Messages;
 import java.io.IOException;
 
 /**
@@ -25,5 +27,12 @@ public class LabelVerifierException extends IOException {
 
     public LabelVerifierException(String message, Throwable cause) {
         super(message, cause);
+    }
+    
+    public static void evaluationError (LabelVerifier verifier) 
+            throws LabelVerifierException {
+        throw new LabelVerifierException
+            (Messages.logic_shared_evalFailureMessage(
+                verifier.getDescriptor().getDisplayName()));
     }
 }

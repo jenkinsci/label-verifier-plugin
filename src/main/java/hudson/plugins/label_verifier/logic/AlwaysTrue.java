@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package hudson.plugins.label_verifier.logic;
 
 import hudson.Extension;
@@ -8,46 +12,30 @@ import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.LabelVerifier;
 import hudson.plugins.label_verifier.LabelVerifierDescriptor;
 import hudson.plugins.label_verifier.Messages;
-import hudson.plugins.label_verifier.util.LabelVerifierException;
 import hudson.remoting.Channel;
 import java.io.IOException;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.util.ArrayList;
-
 /**
- * Implements AND expression for {@link LabelVerifier}.
+ * Expression, which is always OK.
  * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
  * @since 1.1
  */
-public class And extends LabelVerifier {
-
-    private final ArrayList<LabelVerifier> verifiers;
-    
+public class AlwaysTrue extends LabelVerifier {
     @DataBoundConstructor
-    public And(final ArrayList<LabelVerifier> verifiers) {
-        this.verifiers = verifiers;
-    }
-
-    public ArrayList<LabelVerifier> getVerifiers() {
-        return verifiers;
+    public AlwaysTrue() {
     }
   
     @Override
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        for (LabelVerifier verifier : verifiers) {
-            if (!LogicHelper.verify(verifier, label, c, channel, root, listener)) {
-                throw new LabelVerifierException(Messages.logic_shared_evalFailureMessage(getDescriptor().getDisplayName()));
-            }
-        }
+        // Do nothing
     }
-
+     
     @Extension
     public static class AndDescriptor extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return Messages.logic_and_displayName();
+            return Messages.logic_never_displayName();
         }
     }
-
 }
