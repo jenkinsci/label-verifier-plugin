@@ -33,7 +33,8 @@ public class Not extends LabelVerifier {
 
     @Override
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {   
-        if (!LogicHelper.verify(verifier, label, c, channel, root, listener)) {
+        final boolean expressionIsOK = LogicHelper.verify(verifier, label, c, channel, root, listener);
+        if (expressionIsOK) {
             throw new LabelVerifierException(Messages.logic_shared_evalFailureMessage(getDescriptor().getDisplayName()));
         }    
     }
