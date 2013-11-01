@@ -4,20 +4,37 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.480.3</version>
-    <relativePath>../pom.xml</relativePath>
+    <version>1.424</version>
   </parent>
   
   <artifactId>label-verifier</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
-  <name>Hudson Label Verifier plugin</name>
-  <url>http://wiki.hudson-ci.org/display/HUDSON/Label+Verifier+Plugin</url>
+  <name>Jenkins Label Verifier plugin</name>
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/Label+Verifier+Plugin</url>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
       <id>kohsuke</id>
       <name>Kohsuke Kawaguchi</name>
+    </developer>
+    <developer>
+      <id>oleg_nenashev</id>
+      <name>Oleg Nenashev</name>
+      <email>nenashev@synopsys.com;o.v.nenashev@gmail.com</email>
+      <organization>Synopsys Inc.</organization>              			
+      <organizationUrl>http://www.synopsys.com</organizationUrl>
+      <roles>
+          <role>maintainer</role>
+      </roles>
     </developer>
   </developers>
 
