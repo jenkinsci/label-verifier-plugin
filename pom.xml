@@ -26,6 +26,16 @@
       <id>kohsuke</id>
       <name>Kohsuke Kawaguchi</name>
     </developer>
+    <developer>
+      <id>oleg_nenashev</id>
+      <name>Oleg Nenashev</name>
+      <email>nenashev@synopsys.com;o.v.nenashev@gmail.com</email>
+      <organization>Synopsys Inc.</organization>              			
+      <organizationUrl>http://www.synopsys.com</organizationUrl>
+      <roles>
+          <role>maintainer</role>
+      </roles>
+    </developer>
   </developers>
 
   <!--dependencies>
