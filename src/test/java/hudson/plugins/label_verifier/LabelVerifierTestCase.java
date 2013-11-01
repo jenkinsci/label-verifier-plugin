@@ -30,6 +30,7 @@ import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.remoting.Channel;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import static junit.framework.Assert.assertEquals;
 import org.jvnet.hudson.test.HudsonTestCase;
@@ -49,6 +50,11 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
     
     private synchronized static int getLabelNameCtr() {
         return ++LABEL_NAME_CTR;
+    }
+    
+    protected void runTest(LabelVerifier expression, boolean expectFail) 
+            throws InterruptedException {
+        runTest(expression, expectFail, null);
     }
     
     protected void runTest(LabelVerifier expression, boolean expectFail, String expectedFailMessage) 
@@ -87,6 +93,12 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
         } else if (expectFail) {
             fail("Exception has been expected");
         }
+    }
+    
+    protected ArrayList<LabelVerifier> createArray(LabelVerifier ... verifiers) {
+        ArrayList<LabelVerifier> list = new ArrayList<LabelVerifier>(verifiers.length);
+        list.addAll(Arrays.asList(verifiers));
+        return list;
     }
 
     protected static class TestVerifier extends LabelVerifier {
