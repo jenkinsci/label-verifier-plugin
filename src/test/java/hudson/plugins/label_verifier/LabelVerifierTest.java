@@ -14,6 +14,7 @@ import org.jvnet.hudson.test.HudsonTestCase;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -50,10 +51,16 @@ public class LabelVerifierTest extends HudsonTestCase {
             }
             Object writeReplace() {return new ShellScriptVerifier("echo");}
         };
-        l.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(lv)));
 
+        l.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(lv)));
         Slave s = createSlave(l);
-        s.toComputer().connect(false).get();
+        
+        try {
+            s.toComputer().connect(false).get();
+        } catch (ExecutionException ex) {
+            //Do nothing
+        }
+        
         assertTrue(veto[0]);
         String log = s.toComputer().getLog();
         assertTrue(log,log.contains("Veto!"));

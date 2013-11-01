@@ -21,15 +21,20 @@ import org.jvnet.hudson.test.HudsonTestCase;
  * @since 1.1
  */
 public abstract class LabelVerifierTestCase extends HudsonTestCase {
-    private static final String DEFAULT_LABEL_NAME = "foo";
+    private static final String LABEL_NAME_PREFIX = "foo";
+    private static int LABEL_NAME_CTR = 0;
     
     protected void runTest(LabelVerifier expression) throws Exception {
         runTest(expression, false, null);
     }
     
+    private synchronized static int getLabelNameCtr() {
+        return ++LABEL_NAME_CTR;
+    }
+    
     protected void runTest(LabelVerifier expression, boolean expectFail, String expectedFailMessage) 
             throws InterruptedException {
-        LabelAtom testLabel = hudson.getLabelAtom(DEFAULT_LABEL_NAME);
+        LabelAtom testLabel = hudson.getLabelAtom(LABEL_NAME_PREFIX+getLabelNameCtr());
         runTest(expression, testLabel, expectFail, expectedFailMessage);
     }
     
