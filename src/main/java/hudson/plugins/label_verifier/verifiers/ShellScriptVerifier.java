@@ -62,14 +62,14 @@ public class ShellScriptVerifier extends LabelVerifier {
                 .envs(Collections.singletonMap("LABEL",label.getName()))
                 .stdout(listener).pwd(root).join();
         if (r!=0)
-            throw new AbortException("The script failed. Label '"+label.getName()+"' is refused.");
+            throw new AbortException();
     }
 
     @Extension
     public static class DescriptorImpl extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return "Verify By Shell Script";
+            return "";
         }
     }
 }

@@ -58,6 +58,9 @@ public class LabelAtomPropertyImpl extends LabelAtomProperty {
     }
 
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+        // Print message
+        listener.getLogger().println(Messages.shared_validatingLabelMessage(label.getName()));
+        
         for (LabelVerifier verifier : verifiers)
             verifier.verify(label,c,channel,root,listener);
     }
@@ -65,9 +68,9 @@ public class LabelAtomPropertyImpl extends LabelAtomProperty {
     @Extension
     public static class DescriptorImpl extends LabelAtomPropertyDescriptor {
         @Override
-		public String getDisplayName() {
-			return "Verify This Label";
-		}
+        public String getDisplayName() {
+            return Messages.LabelAtomPropertyImpl_displayName();
+        }
 
         public List<LabelVerifierDescriptor> getVerifierDescriptors() {
             return LabelVerifierDescriptor.all();

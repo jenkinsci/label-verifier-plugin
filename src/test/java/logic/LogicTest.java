@@ -39,7 +39,7 @@ import hudson.plugins.label_verifier.logic.Or;
 //TODO: add tests for other logic expressions
 public class LogicTest extends LabelVerifierTestCase {
    private static final LabelVerifier TRUE = new AlwaysTrue();
-   private static final LabelVerifier FALSE = new AlwaysTrue();
+   private static final LabelVerifier FALSE = new AlwaysFalse();
    
     
    /**
@@ -90,8 +90,8 @@ public class LogicTest extends LabelVerifierTestCase {
        
        // And some multiple
        runTest(new Or(createArray(FALSE, FALSE, FALSE, FALSE)), true);
-       runTest(new Or(createArray(TRUE, FALSE, FALSE, FALSE)), true);
-       runTest(new Or(createArray(TRUE, FALSE, TRUE, FALSE)), true);
+       runTest(new Or(createArray(TRUE, FALSE, FALSE, FALSE)), false);
+       runTest(new Or(createArray(TRUE, FALSE, TRUE, FALSE)), false);
        runTest(new Or(createArray(TRUE, TRUE, TRUE, FALSE)), false);
        runTest(new Or(createArray(TRUE, TRUE, TRUE, TRUE)), false);
    }

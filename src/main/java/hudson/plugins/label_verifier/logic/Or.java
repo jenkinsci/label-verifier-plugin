@@ -62,19 +62,16 @@ public class Or extends LabelVerifier {
             } 
         }
         
-        throw new LabelVerifierException(Messages.logic_shared_evalFailureMessage(getDescriptor().getDisplayName()));
+        LabelVerifierException.evaluationError(this);
         
         //TODO: Provide more info in messages
     }
 
     @Extension
     public static class OrDescriptor extends LabelVerifierDescriptor {
-
         @Override
         public String getDisplayName() {
             return Messages.logic_or_displayName();
         }
-
     }
-
 }

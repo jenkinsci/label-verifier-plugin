@@ -58,13 +58,12 @@ public class Not extends LabelVerifier {
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {   
         final boolean expressionIsOK = LogicHelper.verify(verifier, label, c, channel, root, listener);
         if (expressionIsOK) {
-            throw new LabelVerifierException(Messages.logic_shared_evalFailureMessage(getDescriptor().getDisplayName()));
+            LabelVerifierException.evaluationError(this);
         }    
     }
 
     @Extension
     public static class NotDescriptor extends LabelVerifierDescriptor {
-
         @Override
         public String getDisplayName() {
             return Messages.logic_not_displayName();

@@ -25,14 +25,11 @@ package hudson.plugins.label_verifier;
 
 import hudson.FilePath;
 import hudson.model.Computer;
-import hudson.model.Hudson;
-import hudson.model.Label;
 import hudson.model.Slave;
 import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.verifiers.ShellScriptVerifier;
 import hudson.remoting.Channel;
-import hudson.slaves.DumbSlave;
 import org.jvnet.hudson.test.HudsonTestCase;
 
 import java.io.IOException;

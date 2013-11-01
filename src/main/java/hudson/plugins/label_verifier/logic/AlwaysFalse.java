@@ -50,8 +50,7 @@ public class AlwaysFalse extends LabelVerifier {
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
         LabelVerifierException.evaluationError(this);
     }
-    
-    
+       
     @Extension
     public static class AndDescriptor extends LabelVerifierDescriptor {
         @Override

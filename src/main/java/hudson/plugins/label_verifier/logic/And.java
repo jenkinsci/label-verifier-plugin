@@ -60,7 +60,7 @@ public class And extends LabelVerifier {
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
         for (LabelVerifier verifier : verifiers) {
             if (!LogicHelper.verify(verifier, label, c, channel, root, listener)) {
-                throw new LabelVerifierException(Messages.logic_shared_evalFailureMessage(getDescriptor().getDisplayName()));
+                LabelVerifierException.evaluationError(this);
             }
         }
     }

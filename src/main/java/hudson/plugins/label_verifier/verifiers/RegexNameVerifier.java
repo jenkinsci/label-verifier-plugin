@@ -30,6 +30,8 @@ import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.LabelVerifier;
 import hudson.plugins.label_verifier.LabelVerifierDescriptor;
+import hudson.plugins.label_verifier.Messages;
+import hudson.plugins.label_verifier.util.LabelVerifierException;
 import hudson.remoting.Channel;
 import hudson.util.FormValidation;
 import java.io.IOException;
@@ -44,7 +46,7 @@ import org.kohsuke.stapler.QueryParameter;
  * @since 1.1
  */
 public class RegexNameVerifier extends LabelVerifier  {
-    String regexExpression;
+    private final String regexExpression;
 
     @DataBoundConstructor
     public RegexNameVerifier(String regexExpression) {
@@ -57,16 +59,16 @@ public class RegexNameVerifier extends LabelVerifier  {
       
     @Override
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        listener.getLogger().println("Validating the label '"+label.getName()+"'");
+        listener.getLogger().println();
         try {
             Pattern.compile(regexExpression);
         } catch(PatternSyntaxException ex) {
-            listener.error("RegexRestriction for label "+label.getName()+" is invalid. Restriction will be skipped");
+            listener.error(Messages.verifiers_regex_invalidRegexMessage(ex.getPattern()));
             return;
         }
                
         if (!c.getName().matches(regexExpression)) {
-            throw new IOException("Label verification failed");
+            LabelVerifierException.evaluationError(this);
         }
     }
     
@@ -74,7 +76,7 @@ public class RegexNameVerifier extends LabelVerifier  {
     public static class DescriptorImpl extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return "Verify computer name by a regular expression";
+            return Messages.verifiers_regex_displayName();
         }
         
         public FormValidation doCheckRegexExpression(@QueryParameter String regexExpression) {

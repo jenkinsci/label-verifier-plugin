@@ -24,7 +24,6 @@
 package hudson.plugins.label_verifier;
 
 import hudson.DescriptorExtensionList;
-import hudson.matrix.AxisDescriptor;
 import hudson.model.Descriptor;
 import hudson.model.Hudson;
 import java.util.List;

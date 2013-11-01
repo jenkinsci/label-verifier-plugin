@@ -51,7 +51,7 @@ public class LabelVerifierException extends IOException {
     public static void evaluationError (LabelVerifier verifier) 
             throws LabelVerifierException {
         throw new LabelVerifierException
-            (Messages.logic_shared_evalFailureMessage(
+            (Messages.shared_evalFailureMessage(
                 verifier.getDescriptor().getDisplayName()));
     }
 }
