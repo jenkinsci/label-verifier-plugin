@@ -31,6 +31,7 @@ import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.LabelVerifier;
 import hudson.plugins.label_verifier.LabelVerifierDescriptor;
+import hudson.plugins.label_verifier.Messages;
 import hudson.remoting.Channel;
 import hudson.tasks.Shell;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -54,11 +55,10 @@ public class ShellScriptVerifier extends LabelVerifier {
     @Override
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
         Shell shell = new Shell(this.script);
-        FilePath script = shell.createScriptFile(root);
-        shell.buildCommandLine(script);
+        FilePath scriptFile = shell.createScriptFile(root);
+        shell.buildCommandLine(scriptFile);
 
-        listener.getLogger().println("Validating the label '"+label.getName()+"'");
-        int r = root.createLauncher(listener).launch().cmds(shell.buildCommandLine(script))
+        int r = root.createLauncher(listener).launch().cmds(shell.buildCommandLine(scriptFile))
                 .envs(Collections.singletonMap("LABEL",label.getName()))
                 .stdout(listener).pwd(root).join();
         if (r!=0)
@@ -69,7 +69,7 @@ public class ShellScriptVerifier extends LabelVerifier {
     public static class DescriptorImpl extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return "";
+            return Messages.verifiers_shell_displayName();
         }
     }
 }
