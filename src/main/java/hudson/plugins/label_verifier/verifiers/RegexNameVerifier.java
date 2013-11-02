@@ -79,6 +79,11 @@ public class RegexNameVerifier extends LabelVerifier  {
             return Messages.verifiers_regex_displayName();
         }
         
+        @Override
+        public String getShortName() {
+            return Messages.verifiers_regex_shortName();
+        } 
+        
         public FormValidation doCheckRegexExpression(@QueryParameter String regexExpression) {
             try {
                 Pattern.compile(regexExpression);

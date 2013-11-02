@@ -49,4 +49,13 @@ public abstract class LabelVerifierDescriptor extends Descriptor<LabelVerifier> 
     public List<LabelVerifierDescriptor> getVerifierDescriptors() {
         return LabelVerifierDescriptor.all();
     }
+    
+    /**
+     * Returns a short name to be displayed in messages.
+     * @return Short name (displayName in default implementation)
+     * @since 1.1
+     */
+    public String getShortName() {
+        return getDisplayName();
+    }
 }

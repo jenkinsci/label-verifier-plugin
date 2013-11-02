@@ -71,5 +71,10 @@ public class ShellScriptVerifier extends LabelVerifier {
         public String getDisplayName() {
             return Messages.verifiers_shell_displayName();
         }
+
+        @Override
+        public String getShortName() {
+            return Messages.verifiers_shell_shortName();
+        }     
     }
 }

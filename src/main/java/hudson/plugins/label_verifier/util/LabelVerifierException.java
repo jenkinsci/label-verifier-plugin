@@ -52,6 +52,6 @@ public class LabelVerifierException extends IOException {
             throws LabelVerifierException {
         throw new LabelVerifierException
             (Messages.shared_evalFailureMessage(
-                verifier.getDescriptor().getDisplayName()));
+                verifier.getDescriptor().getShortName()));
     }
 }
