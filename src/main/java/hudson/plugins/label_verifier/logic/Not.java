@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2010, Kohsuke Kawaguchi
+ * Copyright 2013 Synopsys Inc., Oleg Nenashev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package hudson.plugins.label_verifier.verifiers;
+package hudson.plugins.label_verifier.logic;
 
-import hudson.AbortException;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Computer;
@@ -32,49 +31,42 @@ import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.LabelVerifier;
 import hudson.plugins.label_verifier.LabelVerifierDescriptor;
 import hudson.plugins.label_verifier.Messages;
+import hudson.plugins.label_verifier.util.LabelVerifierException;
 import hudson.remoting.Channel;
-import hudson.tasks.Shell;
+import java.io.IOException;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.io.IOException;
-import java.util.Collections;
-
 /**
- * Verifies the label by running a shell script.
- * 
- * @author Kohsuke Kawaguchi
+ * Implements NOT expression for {@link LabelVerifier}.
+ * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @since 1.1
  */
-public class ShellScriptVerifier extends LabelVerifier {
-    public final String script;
+public class Not extends LabelVerifier {
 
+    private final LabelVerifier verifier;
+    
     @DataBoundConstructor
-    public ShellScriptVerifier(String script) {
-        this.script = script;
+    public Not(final LabelVerifier verifier) {
+        this.verifier = verifier;
+    }
+
+    public LabelVerifier getVerifier() {
+        return verifier;
     }
 
     @Override
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        Shell shell = new Shell(this.script);
-        FilePath scriptFile = shell.createScriptFile(root);
-        shell.buildCommandLine(scriptFile);
-
-        int r = root.createLauncher(listener).launch().cmds(shell.buildCommandLine(scriptFile))
-                .envs(Collections.singletonMap("LABEL",label.getName()))
-                .stdout(listener).pwd(root).join();
-        if (r!=0)
-            throw new AbortException();
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {   
+        final boolean expressionIsOK = LogicHelper.verify(verifier, label, c, channel, root, listener);
+        if (expressionIsOK) {
+            LabelVerifierException.evaluationError(this);
+        }    
     }
 
     @Extension
-    public static class DescriptorImpl extends LabelVerifierDescriptor {
+    public static class NotDescriptor extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return Messages.verifiers_shell_displayName();
+            return Messages.logic_not_displayName();
         }
-
-        @Override
-        public String getShortName() {
-            return Messages.verifiers_shell_shortName();
-        }     
     }
 }

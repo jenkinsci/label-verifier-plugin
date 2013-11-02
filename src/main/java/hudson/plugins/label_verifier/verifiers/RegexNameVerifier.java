@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2010, Kohsuke Kawaguchi
+ * Copyright 2013 Synopsys Inc., Oleg Nenashev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package hudson.plugins.label_verifier.verifiers;
 
-import hudson.AbortException;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Computer;
@@ -32,49 +31,67 @@ import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.LabelVerifier;
 import hudson.plugins.label_verifier.LabelVerifierDescriptor;
 import hudson.plugins.label_verifier.Messages;
+import hudson.plugins.label_verifier.util.LabelVerifierException;
 import hudson.remoting.Channel;
-import hudson.tasks.Shell;
-import org.kohsuke.stapler.DataBoundConstructor;
-
+import hudson.util.FormValidation;
 import java.io.IOException;
-import java.util.Collections;
+import org.kohsuke.stapler.DataBoundConstructor;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import org.kohsuke.stapler.QueryParameter;
 
 /**
- * Verifies the label by running a shell script.
- * 
- * @author Kohsuke Kawaguchi
+ * Verifies the computer name by a regular expression.
+ * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @since 1.1
  */
-public class ShellScriptVerifier extends LabelVerifier {
-    public final String script;
+public class RegexNameVerifier extends LabelVerifier  {
+    private final String regexExpression;
 
     @DataBoundConstructor
-    public ShellScriptVerifier(String script) {
-        this.script = script;
+    public RegexNameVerifier(String regexExpression) {
+        this.regexExpression = regexExpression;
     }
 
+    public String getRegexExpression() {
+        return regexExpression;
+    }
+      
     @Override
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        Shell shell = new Shell(this.script);
-        FilePath scriptFile = shell.createScriptFile(root);
-        shell.buildCommandLine(scriptFile);
-
-        int r = root.createLauncher(listener).launch().cmds(shell.buildCommandLine(scriptFile))
-                .envs(Collections.singletonMap("LABEL",label.getName()))
-                .stdout(listener).pwd(root).join();
-        if (r!=0)
-            throw new AbortException();
+        listener.getLogger().println();
+        try {
+            Pattern.compile(regexExpression);
+        } catch(PatternSyntaxException ex) {
+            listener.error(Messages.verifiers_regex_invalidRegexMessage(ex.getPattern()));
+            return;
+        }
+               
+        if (!c.getName().matches(regexExpression)) {
+            LabelVerifierException.evaluationError(this);
+        }
     }
-
+    
     @Extension
     public static class DescriptorImpl extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return Messages.verifiers_shell_displayName();
+            return Messages.verifiers_regex_displayName();
         }
-
+        
         @Override
         public String getShortName() {
-            return Messages.verifiers_shell_shortName();
-        }     
+            return Messages.verifiers_regex_shortName();
+        } 
+        
+        public FormValidation doCheckRegexExpression(@QueryParameter String regexExpression) {
+            try {
+                Pattern.compile(regexExpression);
+            } catch (PatternSyntaxException exception) {
+                return FormValidation.error(exception.getDescription()+"\nRestriction will be ignored");
+            }
+            return FormValidation.ok();
+        }
     }
+    
 }

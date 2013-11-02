@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2010, Kohsuke Kawaguchi
+ * Copyright 2013 Synopsys Inc., Oleg Nenashev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package hudson.plugins.label_verifier.verifiers;
+package hudson.plugins.label_verifier.logic;
 
-import hudson.AbortException;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Computer;
@@ -33,48 +32,29 @@ import hudson.plugins.label_verifier.LabelVerifier;
 import hudson.plugins.label_verifier.LabelVerifierDescriptor;
 import hudson.plugins.label_verifier.Messages;
 import hudson.remoting.Channel;
-import hudson.tasks.Shell;
+import java.io.IOException;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.io.IOException;
-import java.util.Collections;
-
 /**
- * Verifies the label by running a shell script.
- * 
- * @author Kohsuke Kawaguchi
+ * Expression, which is always OK.
+ * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @since 1.1
  */
-public class ShellScriptVerifier extends LabelVerifier {
-    public final String script;
-
+public class AlwaysTrue extends LabelVerifier {
     @DataBoundConstructor
-    public ShellScriptVerifier(String script) {
-        this.script = script;
+    public AlwaysTrue() {
     }
-
+  
     @Override
     public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        Shell shell = new Shell(this.script);
-        FilePath scriptFile = shell.createScriptFile(root);
-        shell.buildCommandLine(scriptFile);
-
-        int r = root.createLauncher(listener).launch().cmds(shell.buildCommandLine(scriptFile))
-                .envs(Collections.singletonMap("LABEL",label.getName()))
-                .stdout(listener).pwd(root).join();
-        if (r!=0)
-            throw new AbortException();
+        // Do nothing
     }
-
+     
     @Extension
-    public static class DescriptorImpl extends LabelVerifierDescriptor {
+    public static class AndDescriptor extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
-            return Messages.verifiers_shell_displayName();
+            return Messages.logic_never_displayName();
         }
-
-        @Override
-        public String getShortName() {
-            return Messages.verifiers_shell_shortName();
-        }     
     }
 }
