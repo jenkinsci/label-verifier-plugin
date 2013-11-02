@@ -23,6 +23,7 @@
  */
 package hudson.plugins.label_verifier;
 
+import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.Computer;
 import hudson.model.Slave;
@@ -52,6 +53,10 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
         return ++LABEL_NAME_CTR;
     }
     
+    protected LabelAtom createUniqueLabelAtom() {
+        return hudson.getLabelAtom(LABEL_NAME_PREFIX+getLabelNameCtr());
+    }
+    
     protected void runTest(LabelVerifier expression, boolean expectFail) 
             throws InterruptedException {
         runTest(expression, expectFail, null);
@@ -59,22 +64,35 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
     
     protected void runTest(LabelVerifier expression, boolean expectFail, String expectedFailMessage) 
             throws InterruptedException {
-        LabelAtom testLabel = hudson.getLabelAtom(LABEL_NAME_PREFIX+getLabelNameCtr());
+        LabelAtom testLabel = createUniqueLabelAtom();
         runTest(expression, testLabel, expectFail, expectedFailMessage);
     }
     
     protected void runTest(LabelVerifier expression, LabelAtom testLabel, boolean expectFail, String expectedFailMessage)
             throws InterruptedException {
-        
+        runTest(expression, null, testLabel, expectFail, expectedFailMessage);
+    }
+
+    /**
+     * Generic wrapper for testing of {@link LabelVerifier} classes.
+     * @param expression Expression to be checked
+     * @param nodeName Name of the node to be created (may be null)
+     * @param testLabel Label to be added
+     * @param expectFail Expect that label verification fails
+     * @param expectedFailMessage Expect the following verification message (will be ignored if null)
+     * @throws InterruptedException 
+     */
+    protected void runTest(LabelVerifier expression, String nodeName, LabelAtom testLabel,
+            boolean expectFail, String expectedFailMessage)
+            throws InterruptedException {
         final TestVerifier testVerifier = new TestVerifier(expression);
-        
+
         // Init node
         try {
-            Slave s = createSlave(testLabel);       
+            Slave s = nodeName != null ? createSlave(nodeName, testLabel.getName(), new EnvVars()) : createSlave(testLabel);
             testLabel.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(testVerifier)));
             s.toComputer().connect(true).get();
-        } catch(Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
             // do nothing
         }
 
