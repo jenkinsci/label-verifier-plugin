@@ -94,7 +94,7 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
             s.toComputer().connect(false).get();
         } catch (Exception ex) {
             // do nothing
-            fail(ex.getMessage);
+            fail(ex.getMessage());
         }
 
         // Analyze results   
