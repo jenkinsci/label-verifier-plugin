@@ -91,9 +91,10 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
         try {
             Slave s = nodeName != null ? createSlave(nodeName, testLabel.getName(), new EnvVars()) : createSlave(testLabel);
             testLabel.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(testVerifier)));
-            s.toComputer().connect(true).get();
+            s.toComputer().connect(false).get();
         } catch (Exception ex) {
             // do nothing
+            fail(ex.getMessage);
         }
 
         // Analyze results   
