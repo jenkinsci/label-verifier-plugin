@@ -30,7 +30,12 @@ import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.verifiers.ShellScriptVerifier;
 import hudson.remoting.Channel;
+import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.Test;
 import org.jvnet.hudson.test.HudsonTestCase;
+import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.TestExtension;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,15 +44,20 @@ import java.util.concurrent.ExecutionException;
 /**
  * @author Kohsuke Kawaguchi
  */
-public class LabelVerifierTest extends HudsonTestCase {
+public class LabelVerifierTest {
+
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
+
+    @Test
     public void testConfigRoundtrip() throws Exception {
-        LabelAtom l = hudson.getLabelAtom("foo");
+        LabelAtom l = j.jenkins.getLabelAtom("foo");
 
         ShellScriptVerifier v =  new ShellScriptVerifier("echo bravo");
         LabelAtomPropertyImpl p = new LabelAtomPropertyImpl(Arrays.asList(v));
         l.getProperties().add(p);
 
-        submit(createWebClient().goTo("/label/foo/configure").getFormByName("config"));
+        j.submit(j.createWebClient().goTo("label/foo/configure").getFormByName("config"));
 
         assertEquals(1, l.getProperties().size());
 
@@ -55,25 +65,17 @@ public class LabelVerifierTest extends HudsonTestCase {
         assertEquals(1, pp.getVerifiers().size());
 
         ShellScriptVerifier vv = pp.getVerifiers().get(ShellScriptVerifier.class);
-        assertEqualDataBoundBeans(p,pp);
-        assertEqualDataBoundBeans(v,vv);
+        j.assertEqualDataBoundBeans(p,pp);
+        j.assertEqualDataBoundBeans(v,vv);
     }
 
+    @Test
     public void testVeto() throws Exception {
-        LabelAtom l = hudson.getLabelAtom("foo");
-        final boolean[] veto = new boolean[1];
+        LabelAtom l = j.jenkins.getLabelAtom("foo");
 
-        LabelVerifier lv = new LabelVerifier() {
-            @Override
-            public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-                veto[0] = true;
-                throw new IOException("Veto!");
-            }
-            Object writeReplace() {return new ShellScriptVerifier("echo");}
-        };
-
+        AlwaysVetoLabelVerifier lv = new AlwaysVetoLabelVerifier();
         l.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(lv)));
-        Slave s = createSlave(l);
+        Slave s = j.createSlave(l);
         
         try {
             s.toComputer().connect(false).get();
@@ -81,10 +83,26 @@ public class LabelVerifierTest extends HudsonTestCase {
             //Do nothing
         }
         
-        assertTrue(veto[0]);
+        assertTrue("Label has not been vetoed", lv.vetoed);
         String log = s.toComputer().getLog();
-        assertTrue(log,log.contains("Veto!"));
+        assertTrue("Log does not contain the veto message", log.contains("Veto!"));
+        assertTrue("Agent should not have been started", s.toComputer().isOffline());
+    }
 
-        assertTrue(s.toComputer().isOffline());
+    public static class AlwaysVetoLabelVerifier extends LabelVerifier {
+
+        boolean vetoed;
+
+        @Override
+        public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+            vetoed = true;
+            listener.error("Veto!");
+            throw new IOException("Veto!");
+        }
+
+        @TestExtension("testVeto")
+        public static class DescriptorImpl extends LabelVerifierDescriptor {
+
+        }
     }
 }
