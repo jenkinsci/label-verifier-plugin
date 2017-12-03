@@ -26,6 +26,7 @@ package hudson.plugins.label_verifier;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Computer;
+import hudson.model.Node;
 import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.remoting.Channel;
@@ -43,7 +44,12 @@ import java.util.Set;
 public class ComputerListenerImpl extends ComputerListener {
     @Override
     public void preOnline(Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        Set<LabelAtom> labels = c.getNode().getAssignedLabels();
+        Node node = c.getNode();
+        if (node == null) {
+            throw new IOException("Cannot retrieve the Node instance for the computer and verify labels");
+        }
+
+        Set<LabelAtom> labels = node.getAssignedLabels();
         for (LabelAtom label : labels) {
             LabelAtomPropertyImpl lap = label.getProperties().get(LabelAtomPropertyImpl.class);
             if (lap!=null)
