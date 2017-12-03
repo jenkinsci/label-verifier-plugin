@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 /**
  * Implements AND expression for {@link LabelVerifier}.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 public class Or extends LabelVerifier {

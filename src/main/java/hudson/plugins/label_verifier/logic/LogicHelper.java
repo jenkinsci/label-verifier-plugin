@@ -33,7 +33,7 @@ import java.io.IOException;
 
 /**
  * Provides helper methods for logic operations.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  */
 class LogicHelper {
     /**

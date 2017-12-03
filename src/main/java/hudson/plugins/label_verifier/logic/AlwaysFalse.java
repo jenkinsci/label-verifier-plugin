@@ -38,7 +38,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Expression, which always fails the evaluation.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 public class AlwaysFalse extends LabelVerifier {
