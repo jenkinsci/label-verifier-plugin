@@ -42,7 +42,7 @@ import org.kohsuke.stapler.QueryParameter;
 
 /**
  * Verifies the computer name by a regular expression.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 public class RegexNameVerifier extends LabelVerifier  {

@@ -37,7 +37,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Expression, which is always OK.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 public class AlwaysTrue extends LabelVerifier {

@@ -38,7 +38,7 @@ import org.jvnet.hudson.test.HudsonTestCase;
 
 /**
  * Provides help methods for {@link LabelVerifier} tests.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 public abstract class LabelVerifierTestCase extends HudsonTestCase {

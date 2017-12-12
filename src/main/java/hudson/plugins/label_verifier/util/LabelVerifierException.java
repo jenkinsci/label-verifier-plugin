@@ -30,7 +30,7 @@ import java.io.IOException;
 /**
  * A label verification exception.
  * This class should contain description of validation errors.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 //TODO: Support of logic traces

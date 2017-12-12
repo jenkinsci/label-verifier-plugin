@@ -33,7 +33,7 @@ import hudson.plugins.label_verifier.logic.Or;
 
 /**
  * Contains tests for logic expressions.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 //TODO: add tests for other logic expressions

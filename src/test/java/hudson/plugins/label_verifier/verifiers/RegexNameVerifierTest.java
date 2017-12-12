@@ -28,7 +28,7 @@ import hudson.plugins.label_verifier.LabelVerifierTestCase;
 
 /**
  * Contains tests for {@link RegexNameVerifier}.
- * @author Oleg Nenashev <nenashev@synopsys.com>, Synopsys Inc.
+ * @author Oleg Nenashev
  * @since 1.1
  */
 public class RegexNameVerifierTest extends LabelVerifierTestCase {
