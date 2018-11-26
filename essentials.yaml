@@ -1,0 +1,5 @@
+---
+pct:
+  useJDK11: true
+  plugins:
+    - "git"
