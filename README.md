@@ -8,7 +8,7 @@ This plugin allows system administrator to programmatically verify the label ass
 Go to the label configuration page of the label whose assignment you want to validate. For example, http://yourserver/jenkins/label/foo/configure.
 You can associate "label verifies" through this UI, as follows:
 
-[![Verifier Configuration](/docs/images/config.png)]
+![Verifier Configuration](/docs/images/config.png)
 
 The script specified here gets executed every time an agent with this label comes online. 
 If the script returns a non-zero exit code, the label assignment is considered illegal, and Jenkins will mark the agent as offline to prevent it from getting used for a build.
