@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+  This plugin allows system administrator to programmatically verify the label assignment correctness on agents
+</div>
