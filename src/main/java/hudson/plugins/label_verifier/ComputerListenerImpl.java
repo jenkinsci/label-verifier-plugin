@@ -44,12 +44,8 @@ import java.util.Set;
 public class ComputerListenerImpl extends ComputerListener {
     @Override
     public void preOnline(Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
-        Node node = c.getNode();
-        if (node == null) {
-            throw new IOException("Cannot retrieve the Node instance for the computer and verify labels");
-        }
+        Set<LabelAtom> labels = c.getNode().getAssignedLabels();
 
-        Set<LabelAtom> labels = node.getAssignedLabels();
         for (LabelAtom label : labels) {
             LabelAtomPropertyImpl lap = label.getProperties().get(LabelAtomPropertyImpl.class);
             if (lap!=null)
