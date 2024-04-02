@@ -47,6 +47,15 @@
     <url>https://github.com/${gitHubRepo}</url>
     <tag>${scmTag}</tag>
   </scm>
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jenkins-ci.tools</groupId>
+                <artifactId>maven-hpi-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
 
   <repositories>
     <repository>
