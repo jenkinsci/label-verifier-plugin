@@ -14,10 +14,6 @@
   <name>Jenkins Label Verifier plugin</name>
   <url>https://github.com/jenkinsci/label-verifier-plugin</url>
 
-  <properties>
-    <jenkins.version>2.426.3</jenkins.version>
-  </properties>
-
   <licenses>
     <license>
       <name>The MIT license</name>
