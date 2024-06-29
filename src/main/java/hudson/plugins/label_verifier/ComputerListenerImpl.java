@@ -31,7 +31,6 @@ import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.remoting.Channel;
 import hudson.slaves.ComputerListener;
-
 import java.io.IOException;
 import java.util.Set;
 
@@ -43,7 +42,8 @@ import java.util.Set;
 @Extension
 public class ComputerListenerImpl extends ComputerListener {
     @Override
-    public void preOnline(Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+    public void preOnline(Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         Node node = c.getNode();
         if (node == null) {
             throw new IOException("Cannot retrieve the Node instance for the computer and verify labels");
@@ -52,8 +52,7 @@ public class ComputerListenerImpl extends ComputerListener {
         Set<LabelAtom> labels = node.getAssignedLabels();
         for (LabelAtom label : labels) {
             LabelAtomPropertyImpl lap = label.getProperties().get(LabelAtomPropertyImpl.class);
-            if (lap!=null)
-                lap.verify(label,c,channel,root,listener);
+            if (lap != null) lap.verify(label, c, channel, root, listener);
         }
     }
 }

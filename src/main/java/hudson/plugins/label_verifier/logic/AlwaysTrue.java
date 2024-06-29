@@ -42,14 +42,14 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class AlwaysTrue extends LabelVerifier {
     @DataBoundConstructor
-    public AlwaysTrue() {
-    }
-  
+    public AlwaysTrue() {}
+
     @Override
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         // Do nothing
     }
-     
+
     @Extension
     public static class AndDescriptor extends LabelVerifierDescriptor {
         @Override

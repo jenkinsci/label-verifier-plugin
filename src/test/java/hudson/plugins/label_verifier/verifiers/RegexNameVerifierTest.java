@@ -35,19 +35,19 @@ public class RegexNameVerifierTest extends LabelVerifierTestCase {
     public void testInvalidRegex() throws InterruptedException {
         LabelAtom testLabel = createUniqueLabelAtom();
         RegexNameVerifier verifier = new RegexNameVerifier("invalid regex ][");
-        
+
         runTest(verifier, "useless_node", testLabel, false, null);
     }
-    
+
     public void testRegexCheckPassed() throws InterruptedException {
         LabelAtom testLabel = createUniqueLabelAtom();
-        RegexNameVerifier verifier = new RegexNameVerifier("test.*");        
+        RegexNameVerifier verifier = new RegexNameVerifier("test.*");
         runTest(verifier, "test", testLabel, false, null);
     }
-    
+
     public void testRegexCheckFailed() throws InterruptedException {
         LabelAtom testLabel = createUniqueLabelAtom();
-        RegexNameVerifier verifier = new RegexNameVerifier("test123.*");        
+        RegexNameVerifier verifier = new RegexNameVerifier("test123.*");
         runTest(verifier, "test", testLabel, false, null);
     }
 }

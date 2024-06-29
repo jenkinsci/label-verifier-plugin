@@ -43,14 +43,14 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class AlwaysFalse extends LabelVerifier {
     @DataBoundConstructor
-    public AlwaysFalse() {
-    }
- 
+    public AlwaysFalse() {}
+
     @Override
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         LabelVerifierException.evaluationError(this);
     }
-       
+
     @Extension
     public static class AndDescriptor extends LabelVerifierDescriptor {
         @Override

@@ -46,9 +46,11 @@ class LogicHelper {
      * @param root Slave&squot;s Root Directory
      * @param listener Log listener
      * @return true if the label verification passed.
-     * @throws InterruptedException 
+     * @throws InterruptedException
      */
-    public static boolean verify(LabelVerifier verifier, LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws InterruptedException {
+    public static boolean verify(
+            LabelVerifier verifier, LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws InterruptedException {
         try {
             verifier.verify(label, c, channel, root, listener);
         } catch (IOException ex) {

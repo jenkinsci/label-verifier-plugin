@@ -33,20 +33,19 @@ import hudson.model.labels.LabelAtomProperty;
 import hudson.model.labels.LabelAtomPropertyDescriptor;
 import hudson.remoting.Channel;
 import hudson.util.DescribableList;
-import org.kohsuke.stapler.DataBoundConstructor;
-
 import java.io.IOException;
 import java.util.List;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Contributes {@link LabelAtomProperty} that verifies labels.
- * 
+ *
  * @author Kohsuke Kawaguchi
  */
 public class LabelAtomPropertyImpl extends LabelAtomProperty {
     // TODO: set a valid parent
-    private final DescribableList<LabelVerifier,LabelVerifierDescriptor> verifiers =
-            new DescribableList<LabelVerifier,LabelVerifierDescriptor>(Saveable.NOOP);
+    private final DescribableList<LabelVerifier, LabelVerifierDescriptor> verifiers =
+            new DescribableList<LabelVerifier, LabelVerifierDescriptor>(Saveable.NOOP);
 
     @DataBoundConstructor
     public LabelAtomPropertyImpl(List<? extends LabelVerifier> verifiers) throws IOException {
@@ -57,12 +56,12 @@ public class LabelAtomPropertyImpl extends LabelAtomProperty {
         return verifiers;
     }
 
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         // Print message
         listener.getLogger().println(Messages.shared_validatingLabelMessage(label.getName()));
-        
-        for (LabelVerifier verifier : verifiers)
-            verifier.verify(label,c,channel,root,listener);
+
+        for (LabelVerifier verifier : verifiers) verifier.verify(label, c, channel, root, listener);
     }
 
     @Extension
