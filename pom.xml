@@ -24,15 +24,16 @@
 
   <developers>
     <developer>
-      <id>kohsuke</id>
-      <name>Kohsuke Kawaguchi</name>
-    </developer>
-    <developer>
       <id>oleg_nenashev</id>
       <name>Oleg Nenashev</name>
       <roles>
-        <role>maintainer</role>
+        <role>emeritus</role>
       </roles>
+    </developer>
+    <developer>
+      <id>markewaite</id>
+      <name>Mark Waite</name>
+      <email>mark.earl.waite@gmail.com</email>
     </developer>
   </developers>
 
