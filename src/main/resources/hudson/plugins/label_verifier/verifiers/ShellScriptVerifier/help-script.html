@@ -1,16 +1,19 @@
 <div>
-  Runs a shell script (defaults to <tt>sh</tt>, but this is configurable) to verify that this label assignment
-  is correct. If the script exits with non-zero, the label is considered invalid, and the slave will fail
-  to become online.
+  <p>
+  Runs a shell script to verify that this label assignment is correct.
+  If the script exits with a non-zero return code, the label is considered invalid, and the agent will be marked offline.
+  </p>
 
   <p>
-  The remote FS root of the node will be the working directory for the script.
-  If your shell script has no header line like <tt>#!/bin/sh</tt> &mdash;, then the shell configured
-  system-wide will be used, but you can also use the header line to write script in another language
-  (like <tt>#!/bin/perl</tt>) or control the options that shell uses.
+  The remote file system root of the agent is the working directory for the script.
+  If the script has no header line like <code>#!/bin/sh</code>, then the shell configured system-wide will be used.
+  The header line can be configured to write script in another language (like <code>#!/bin/perl</code>).
+  The header line can be configured to control the shell options used in the script.
+  </p>
 
   <p>
-  By default, the shell will be invoked with the "-ex" option. So all of the commands are printed before being executed,
-  and the script is considered a failure if any of the commands exits with a non-zero exit code. Again, add the
-  <tt>#!/bin/...</tt> line to change this behavior.
+  By default, the shell will be invoked with the <code>-ex</code> option.
+  Commands are printed before being executed and the script is considered a failure if any of the commands exits with a non-zero exit code.
+  Add options to the <code>#!/bin/...</code> line to change this behavior.
+  </p>
 </div>
