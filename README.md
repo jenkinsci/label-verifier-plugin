@@ -26,10 +26,8 @@ jenkins:
     properties:
     - ? ''
       : verifiers:
-        - or:
-            verifiers:
-            - shellScriptVerifier:
-                script: "git --version 2>&1 | grep -F 2.25"
+        - shellScriptVerifier:
+            script: "git --version 2>&1 | grep -F 2.25"
 ```
 
 ## Changelog
