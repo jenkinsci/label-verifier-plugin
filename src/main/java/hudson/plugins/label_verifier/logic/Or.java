@@ -34,8 +34,8 @@ import hudson.plugins.label_verifier.Messages;
 import hudson.plugins.label_verifier.util.LabelVerifierException;
 import hudson.remoting.Channel;
 import java.io.IOException;
-import org.kohsuke.stapler.DataBoundConstructor;
 import java.util.ArrayList;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Implements AND expression for {@link LabelVerifier}.
@@ -44,7 +44,7 @@ import java.util.ArrayList;
  */
 public class Or extends LabelVerifier {
     private final ArrayList<LabelVerifier> verifiers;
-    
+
     @DataBoundConstructor
     public Or(final ArrayList<LabelVerifier> verifiers) {
         this.verifiers = verifiers;
@@ -53,18 +53,19 @@ public class Or extends LabelVerifier {
     public ArrayList<LabelVerifier> getVerifiers() {
         return verifiers;
     }
-  
+
     @Override
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         for (LabelVerifier verifier : verifiers) {
-            if (LogicHelper.verify(verifier, label, c, channel, root, listener)) {         
+            if (LogicHelper.verify(verifier, label, c, channel, root, listener)) {
                 return; // Expression is true
-            } 
+            }
         }
-        
+
         LabelVerifierException.evaluationError(this);
-        
-        //TODO: Provide more info in messages
+
+        // TODO: Provide more info in messages
     }
 
     @Extension

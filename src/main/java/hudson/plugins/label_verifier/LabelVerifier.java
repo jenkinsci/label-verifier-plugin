@@ -31,7 +31,6 @@ import hudson.model.Node;
 import hudson.model.TaskListener;
 import hudson.model.labels.LabelAtom;
 import hudson.remoting.Channel;
-
 import java.io.IOException;
 
 /**
@@ -65,10 +64,11 @@ public abstract class LabelVerifier extends AbstractDescribableImpl<LabelVerifie
      *      Exceptions will be recorded to the listener, and
      *      the computer will not become online.
      */
-    public abstract void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException;
+    public abstract void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException;
 
     @Override
     public LabelVerifierDescriptor getDescriptor() {
-        return (LabelVerifierDescriptor)super.getDescriptor();
+        return (LabelVerifierDescriptor) super.getDescriptor();
     }
 }

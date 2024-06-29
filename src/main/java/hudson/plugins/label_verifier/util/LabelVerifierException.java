@@ -33,7 +33,7 @@ import java.io.IOException;
  * @author Oleg Nenashev
  * @since 1.1
  */
-//TODO: Support of logic traces
+// TODO: Support of logic traces
 public class LabelVerifierException extends IOException {
 
     public LabelVerifierException(String message) {
@@ -47,11 +47,9 @@ public class LabelVerifierException extends IOException {
     public LabelVerifierException(String message, Throwable cause) {
         super(message, cause);
     }
-    
-    public static void evaluationError (LabelVerifier verifier) 
-            throws LabelVerifierException {
-        throw new LabelVerifierException
-            (Messages.shared_evalFailureMessage(
-                verifier.getDescriptor().getShortName()));
+
+    public static void evaluationError(LabelVerifier verifier) throws LabelVerifierException {
+        throw new LabelVerifierException(
+                Messages.shared_evalFailureMessage(verifier.getDescriptor().getShortName()));
     }
 }

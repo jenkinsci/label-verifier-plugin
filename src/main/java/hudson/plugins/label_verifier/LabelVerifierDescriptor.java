@@ -25,10 +25,8 @@ package hudson.plugins.label_verifier;
 
 import hudson.DescriptorExtensionList;
 import hudson.model.Descriptor;
-import hudson.model.Hudson;
-import jenkins.model.Jenkins;
-
 import java.util.List;
+import jenkins.model.Jenkins;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -37,10 +35,10 @@ public abstract class LabelVerifierDescriptor extends Descriptor<LabelVerifier> 
     /**
      * Returns all the registered {@link LabelVerifierDescriptor}s.
      */
-    public static DescriptorExtensionList<LabelVerifier,LabelVerifierDescriptor> all() {
+    public static DescriptorExtensionList<LabelVerifier, LabelVerifierDescriptor> all() {
         return Jenkins.getActiveInstance().getDescriptorList(LabelVerifier.class);
     }
-    
+
     /**
      * Gets available descriptors.
      * Function is dedicated to be used in logic expressions and other verifiers,
@@ -51,7 +49,7 @@ public abstract class LabelVerifierDescriptor extends Descriptor<LabelVerifier> 
     public List<LabelVerifierDescriptor> getVerifierDescriptors() {
         return LabelVerifierDescriptor.all();
     }
-    
+
     /**
      * Returns a short name to be displayed in messages.
      * @return Short name (displayName in default implementation)

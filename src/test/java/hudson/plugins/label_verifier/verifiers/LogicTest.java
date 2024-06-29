@@ -36,63 +36,62 @@ import hudson.plugins.label_verifier.logic.Or;
  * @author Oleg Nenashev
  * @since 1.1
  */
-//TODO: add tests for other logic expressions
+// TODO: add tests for other logic expressions
 public class LogicTest extends LabelVerifierTestCase {
-   private static final LabelVerifier TRUE = new AlwaysTrue();
-   private static final LabelVerifier FALSE = new AlwaysFalse();
-   
-    
-   /**
-    * Checks cases with {@link AlwaysTrue} expression. 
-    */
-   public void testAlwaysTrue() throws Exception {
-       runTest(new AlwaysTrue());
-   }
-   
-   /**
-    * Checks cases with {@link AlwaysFalse} expression. 
-    */
-   public void testAlwaysFalse() throws Exception {
-       runTest(new AlwaysFalse(), true, null);
-   }
-   
-   /**
-    * Checks typical cases for {@link Not} expression. 
-    */
-   public void testNot() throws Exception {
-       runTest(new Not(new AlwaysTrue()), true, null);
-       runTest(new Not(new AlwaysFalse()));
-   }
-   
-   /**
-    * Checks typical cases for {@link And} expression. 
-    */
-   public void testAnd() throws Exception {
-       runTest(new And(createArray(FALSE, FALSE)), true);
-       runTest(new And(createArray(TRUE, FALSE)), true);
-       runTest(new And(createArray(FALSE, TRUE)), true);
-       runTest(new And(createArray(TRUE, TRUE)), false);
-       
-       // And some multiple
-       runTest(new And(createArray(FALSE, FALSE, FALSE, FALSE)), true);
-       runTest(new And(createArray(TRUE, TRUE, TRUE, FALSE)), true);
-       runTest(new And(createArray(TRUE, TRUE, TRUE, TRUE)), false);
-   }
-   
-   /**
-    * Checks typical cases for {@link Or} expression. 
-    */
-   public void testOr() throws Exception {
-       runTest(new Or(createArray(FALSE, FALSE)), true);
-       runTest(new Or(createArray(TRUE, FALSE)), false);
-       runTest(new Or(createArray(FALSE, TRUE)), false);
-       runTest(new Or(createArray(TRUE, TRUE)), false);
-       
-       // And some multiple
-       runTest(new Or(createArray(FALSE, FALSE, FALSE, FALSE)), true);
-       runTest(new Or(createArray(TRUE, FALSE, FALSE, FALSE)), false);
-       runTest(new Or(createArray(TRUE, FALSE, TRUE, FALSE)), false);
-       runTest(new Or(createArray(TRUE, TRUE, TRUE, FALSE)), false);
-       runTest(new Or(createArray(TRUE, TRUE, TRUE, TRUE)), false);
-   }
+    private static final LabelVerifier TRUE = new AlwaysTrue();
+    private static final LabelVerifier FALSE = new AlwaysFalse();
+
+    /**
+     * Checks cases with {@link AlwaysTrue} expression.
+     */
+    public void testAlwaysTrue() throws Exception {
+        runTest(new AlwaysTrue());
+    }
+
+    /**
+     * Checks cases with {@link AlwaysFalse} expression.
+     */
+    public void testAlwaysFalse() throws Exception {
+        runTest(new AlwaysFalse(), true, null);
+    }
+
+    /**
+     * Checks typical cases for {@link Not} expression.
+     */
+    public void testNot() throws Exception {
+        runTest(new Not(new AlwaysTrue()), true, null);
+        runTest(new Not(new AlwaysFalse()));
+    }
+
+    /**
+     * Checks typical cases for {@link And} expression.
+     */
+    public void testAnd() throws Exception {
+        runTest(new And(createArray(FALSE, FALSE)), true);
+        runTest(new And(createArray(TRUE, FALSE)), true);
+        runTest(new And(createArray(FALSE, TRUE)), true);
+        runTest(new And(createArray(TRUE, TRUE)), false);
+
+        // And some multiple
+        runTest(new And(createArray(FALSE, FALSE, FALSE, FALSE)), true);
+        runTest(new And(createArray(TRUE, TRUE, TRUE, FALSE)), true);
+        runTest(new And(createArray(TRUE, TRUE, TRUE, TRUE)), false);
+    }
+
+    /**
+     * Checks typical cases for {@link Or} expression.
+     */
+    public void testOr() throws Exception {
+        runTest(new Or(createArray(FALSE, FALSE)), true);
+        runTest(new Or(createArray(TRUE, FALSE)), false);
+        runTest(new Or(createArray(FALSE, TRUE)), false);
+        runTest(new Or(createArray(TRUE, TRUE)), false);
+
+        // And some multiple
+        runTest(new Or(createArray(FALSE, FALSE, FALSE, FALSE)), true);
+        runTest(new Or(createArray(TRUE, FALSE, FALSE, FALSE)), false);
+        runTest(new Or(createArray(TRUE, FALSE, TRUE, FALSE)), false);
+        runTest(new Or(createArray(TRUE, TRUE, TRUE, FALSE)), false);
+        runTest(new Or(createArray(TRUE, TRUE, TRUE, TRUE)), false);
+    }
 }

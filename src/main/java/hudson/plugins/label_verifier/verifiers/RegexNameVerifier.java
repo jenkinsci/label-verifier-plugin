@@ -35,9 +35,9 @@ import hudson.plugins.label_verifier.util.LabelVerifierException;
 import hudson.remoting.Channel;
 import hudson.util.FormValidation;
 import java.io.IOException;
-import org.kohsuke.stapler.DataBoundConstructor;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 /**
@@ -45,7 +45,7 @@ import org.kohsuke.stapler.QueryParameter;
  * @author Oleg Nenashev
  * @since 1.1
  */
-public class RegexNameVerifier extends LabelVerifier  {
+public class RegexNameVerifier extends LabelVerifier {
     private final String regexExpression;
 
     @DataBoundConstructor
@@ -56,42 +56,42 @@ public class RegexNameVerifier extends LabelVerifier  {
     public String getRegexExpression() {
         return regexExpression;
     }
-      
+
     @Override
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         listener.getLogger().println();
         try {
             Pattern.compile(regexExpression);
-        } catch(PatternSyntaxException ex) {
+        } catch (PatternSyntaxException ex) {
             listener.error(Messages.verifiers_regex_invalidRegexMessage(ex.getPattern()));
             return;
         }
-               
+
         if (!c.getName().matches(regexExpression)) {
             LabelVerifierException.evaluationError(this);
         }
     }
-    
+
     @Extension
     public static class DescriptorImpl extends LabelVerifierDescriptor {
         @Override
         public String getDisplayName() {
             return Messages.verifiers_regex_displayName();
         }
-        
+
         @Override
         public String getShortName() {
             return Messages.verifiers_regex_shortName();
-        } 
-        
+        }
+
         public FormValidation doCheckRegexExpression(@QueryParameter String regexExpression) {
             try {
                 Pattern.compile(regexExpression);
             } catch (PatternSyntaxException exception) {
-                return FormValidation.error(exception.getDescription()+"\nRestriction will be ignored");
+                return FormValidation.error(exception.getDescription() + "\nRestriction will be ignored");
             }
             return FormValidation.ok();
         }
     }
-    
 }

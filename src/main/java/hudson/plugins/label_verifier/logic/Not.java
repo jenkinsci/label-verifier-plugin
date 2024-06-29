@@ -44,7 +44,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class Not extends LabelVerifier {
 
     private final LabelVerifier verifier;
-    
+
     @DataBoundConstructor
     public Not(final LabelVerifier verifier) {
         this.verifier = verifier;
@@ -55,11 +55,12 @@ public class Not extends LabelVerifier {
     }
 
     @Override
-    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {   
+    public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
+            throws IOException, InterruptedException {
         final boolean expressionIsOK = LogicHelper.verify(verifier, label, c, channel, root, listener);
         if (expressionIsOK) {
             LabelVerifierException.evaluationError(this);
-        }    
+        }
     }
 
     @Extension
