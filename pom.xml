@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>label-verifier</artifactId>
-  <version>${revision}${changelist}</version>
+  <version>${changelist}</version>
   <packaging>hpi</packaging>
   <name>Label verifier plugin</name>
   <url>https://github.com/${gitHubRepo}</url>
@@ -45,8 +45,7 @@
   </scm>
 
   <properties>
-    <revision>1.5</revision>
-    <changelist>-SNAPSHOT</changelist>
+    <changelist>999999-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <jenkins.version>2.426.3</jenkins.version>
     <spotbugs.effort>Max</spotbugs.effort>
