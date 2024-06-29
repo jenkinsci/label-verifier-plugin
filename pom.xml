@@ -48,6 +48,8 @@
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/label-verifier-plugin</gitHubRepo>
     <jenkins.version>2.426.3</jenkins.version>
+    <spotbugs.effort>Max</spotbugs.effort>
+    <spotbugs.threshold>Low</spotbugs.threshold>
     <spotless.check.skip>false</spotless.check.skip>
   </properties>
 
