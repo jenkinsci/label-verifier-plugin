@@ -23,7 +23,8 @@
  */
 package hudson.plugins.label_verifier;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.FilePath;
 import hudson.model.Computer;
@@ -33,27 +34,33 @@ import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.verifiers.ShellScriptVerifier;
 import hudson.remoting.Channel;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public class LabelVerifierTest {
+@WithJenkins
+class LabelVerifierTest {
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+    private JenkinsRule j;
+
+    @BeforeEach
+    void setUp(JenkinsRule rule) {
+        j = rule;
+    }
 
     @Test
-    public void testConfigRoundtrip() throws Exception {
+    void testConfigRoundtrip() throws Exception {
         LabelAtom l = j.jenkins.getLabelAtom("foo");
 
         ShellScriptVerifier v = new ShellScriptVerifier("echo bravo");
-        LabelAtomPropertyImpl p = new LabelAtomPropertyImpl(Arrays.asList(v));
+        LabelAtomPropertyImpl p = new LabelAtomPropertyImpl(List.of(v));
         l.getProperties().add(p);
 
         j.submit(j.createWebClient().goTo("label/foo/configure").getFormByName("config"));
@@ -69,11 +76,11 @@ public class LabelVerifierTest {
     }
 
     @Test
-    public void testVeto() throws Exception {
+    void testVeto() throws Exception {
         LabelAtom l = j.jenkins.getLabelAtom("foo");
 
         AlwaysVetoLabelVerifier lv = new AlwaysVetoLabelVerifier();
-        l.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(lv)));
+        l.getProperties().add(new LabelAtomPropertyImpl(List.of(lv)));
         Slave s = j.createSlave(l);
 
         try {
@@ -82,10 +89,10 @@ public class LabelVerifierTest {
             // Do nothing
         }
 
-        assertTrue("Label has not been vetoed", lv.vetoed);
+        assertTrue(lv.vetoed, "Label has not been vetoed");
         String log = s.toComputer().getLog();
-        assertTrue("Log does not contain the veto message", log.contains("Veto!"));
-        assertTrue("Agent should not have been started", s.toComputer().isOffline());
+        assertTrue(log.contains("Veto!"), "Log does not contain the veto message");
+        assertTrue(s.toComputer().isOffline(), "Agent should not have been started");
     }
 
     public static class AlwaysVetoLabelVerifier extends LabelVerifier {
@@ -94,7 +101,7 @@ public class LabelVerifierTest {
 
         @Override
         public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
-                throws IOException, InterruptedException {
+                throws IOException {
             vetoed = true;
             listener.error("Veto!");
             throw new IOException("Veto!");

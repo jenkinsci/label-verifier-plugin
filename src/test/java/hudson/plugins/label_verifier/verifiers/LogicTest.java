@@ -30,6 +30,8 @@ import hudson.plugins.label_verifier.logic.AlwaysTrue;
 import hudson.plugins.label_verifier.logic.And;
 import hudson.plugins.label_verifier.logic.Not;
 import hudson.plugins.label_verifier.logic.Or;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 /**
  * Contains tests for logic expressions.
@@ -37,28 +39,32 @@ import hudson.plugins.label_verifier.logic.Or;
  * @since 1.1
  */
 // TODO: add tests for other logic expressions
-public class LogicTest extends LabelVerifierTestCase {
+@WithJenkins
+class LogicTest extends LabelVerifierTestCase {
     private static final LabelVerifier TRUE = new AlwaysTrue();
     private static final LabelVerifier FALSE = new AlwaysFalse();
 
     /**
      * Checks cases with {@link AlwaysTrue} expression.
      */
-    public void testAlwaysTrue() throws Exception {
+    @Test
+    void testAlwaysTrue() throws Exception {
         runTest(new AlwaysTrue());
     }
 
     /**
      * Checks cases with {@link AlwaysFalse} expression.
      */
-    public void testAlwaysFalse() throws Exception {
+    @Test
+    void testAlwaysFalse() throws Exception {
         runTest(new AlwaysFalse(), true, null);
     }
 
     /**
      * Checks typical cases for {@link Not} expression.
      */
-    public void testNot() throws Exception {
+    @Test
+    void testNot() throws Exception {
         runTest(new Not(new AlwaysTrue()), true, null);
         runTest(new Not(new AlwaysFalse()));
     }
@@ -66,7 +72,8 @@ public class LogicTest extends LabelVerifierTestCase {
     /**
      * Checks typical cases for {@link And} expression.
      */
-    public void testAnd() throws Exception {
+    @Test
+    void testAnd() throws Exception {
         runTest(new And(createArray(FALSE, FALSE)), true);
         runTest(new And(createArray(TRUE, FALSE)), true);
         runTest(new And(createArray(FALSE, TRUE)), true);
@@ -81,7 +88,8 @@ public class LogicTest extends LabelVerifierTestCase {
     /**
      * Checks typical cases for {@link Or} expression.
      */
-    public void testOr() throws Exception {
+    @Test
+    void testOr() throws Exception {
         runTest(new Or(createArray(FALSE, FALSE)), true);
         runTest(new Or(createArray(TRUE, FALSE)), false);
         runTest(new Or(createArray(FALSE, TRUE)), false);
