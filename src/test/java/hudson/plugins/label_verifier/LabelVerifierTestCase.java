@@ -23,7 +23,8 @@
  */
 package hudson.plugins.label_verifier;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.EnvVars;
 import hudson.FilePath;
@@ -35,16 +36,27 @@ import hudson.remoting.Channel;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.jvnet.hudson.test.HudsonTestCase;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 /**
  * Provides help methods for {@link LabelVerifier} tests.
  * @author Oleg Nenashev
  * @since 1.1
  */
-public abstract class LabelVerifierTestCase extends HudsonTestCase {
+@WithJenkins
+public abstract class LabelVerifierTestCase {
     private static final String LABEL_NAME_PREFIX = "foo";
     private static int LABEL_NAME_CTR = 0;
+
+    protected JenkinsRule j;
+
+    @BeforeEach
+    protected void setUp(JenkinsRule rule) {
+        j = rule;
+    }
 
     protected void runTest(LabelVerifier expression) throws Exception {
         runTest(expression, false, null);
@@ -55,22 +67,21 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
     }
 
     protected LabelAtom createUniqueLabelAtom() {
-        return hudson.getLabelAtom(LABEL_NAME_PREFIX + getLabelNameCtr());
+        return j.jenkins.getLabelAtom(LABEL_NAME_PREFIX + getLabelNameCtr());
     }
 
-    protected void runTest(LabelVerifier expression, boolean expectFail) throws InterruptedException {
+    protected void runTest(LabelVerifier expression, boolean expectFail) throws Exception {
         runTest(expression, expectFail, null);
     }
 
-    protected void runTest(LabelVerifier expression, boolean expectFail, String expectedFailMessage)
-            throws InterruptedException {
+    protected void runTest(LabelVerifier expression, boolean expectFail, String expectedFailMessage) throws Exception {
         LabelAtom testLabel = createUniqueLabelAtom();
         runTest(expression, testLabel, expectFail, expectedFailMessage);
     }
 
     protected void runTest(
             LabelVerifier expression, LabelAtom testLabel, boolean expectFail, String expectedFailMessage)
-            throws InterruptedException {
+            throws Exception {
         runTest(expression, null, testLabel, expectFail, expectedFailMessage);
     }
 
@@ -81,7 +92,7 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
      * @param testLabel Label to be added
      * @param expectFail Expect that label verification fails
      * @param expectedFailMessage Expect the following verification message (will be ignored if null)
-     * @throws InterruptedException
+     * @throws Exception
      */
     protected void runTest(
             LabelVerifier expression,
@@ -89,20 +100,15 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
             LabelAtom testLabel,
             boolean expectFail,
             String expectedFailMessage)
-            throws InterruptedException {
+            throws Exception {
         final TestVerifier testVerifier = new TestVerifier(expression);
 
         // Init node
-        try {
-            Slave s = nodeName != null
-                    ? createSlave(nodeName, testLabel.getName(), new EnvVars())
-                    : createSlave(testLabel);
-            testLabel.getProperties().add(new LabelAtomPropertyImpl(Arrays.asList(testVerifier)));
-            s.toComputer().connect(false).get();
-        } catch (Exception ex) {
-            // do nothing
-            fail(ex.getMessage());
-        }
+        Slave s = nodeName != null
+                ? j.createSlave(nodeName, testLabel.getName(), new EnvVars())
+                : j.createSlave(testLabel);
+        testLabel.getProperties().add(new LabelAtomPropertyImpl(List.of(testVerifier)));
+        s.toComputer().connect(false).get();
 
         // Analyze results
         if (testVerifier.isExceptionThrown()) {
@@ -122,7 +128,7 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
     }
 
     protected ArrayList<LabelVerifier> createArray(LabelVerifier... verifiers) {
-        ArrayList<LabelVerifier> list = new ArrayList<LabelVerifier>(verifiers.length);
+        ArrayList<LabelVerifier> list = new ArrayList<>(verifiers.length);
         list.addAll(Arrays.asList(verifiers));
         return list;
     }
@@ -147,7 +153,7 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
 
         @Override
         public void verify(LabelAtom label, Computer c, Channel channel, FilePath root, TaskListener listener)
-                throws IOException, InterruptedException {
+                throws InterruptedException {
             try {
                 wrappedVerifier.verify(label, c, channel, root, listener);
             } catch (IOException ex) {
@@ -155,5 +161,4 @@ public abstract class LabelVerifierTestCase extends HudsonTestCase {
             }
         }
     }
-    ;
 }

@@ -25,27 +25,33 @@ package hudson.plugins.label_verifier.verifiers;
 
 import hudson.model.labels.LabelAtom;
 import hudson.plugins.label_verifier.LabelVerifierTestCase;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 /**
  * Contains tests for {@link RegexNameVerifier}.
  * @author Oleg Nenashev
  * @since 1.1
  */
-public class RegexNameVerifierTest extends LabelVerifierTestCase {
-    public void testInvalidRegex() throws InterruptedException {
+@WithJenkins
+class RegexNameVerifierTest extends LabelVerifierTestCase {
+
+    @Test
+    void testInvalidRegex() throws Exception {
         LabelAtom testLabel = createUniqueLabelAtom();
         RegexNameVerifier verifier = new RegexNameVerifier("invalid regex ][");
-
         runTest(verifier, "useless_node", testLabel, false, null);
     }
 
-    public void testRegexCheckPassed() throws InterruptedException {
+    @Test
+    void testRegexCheckPassed() throws Exception {
         LabelAtom testLabel = createUniqueLabelAtom();
         RegexNameVerifier verifier = new RegexNameVerifier("test.*");
         runTest(verifier, "test", testLabel, false, null);
     }
 
-    public void testRegexCheckFailed() throws InterruptedException {
+    @Test
+    void testRegexCheckFailed() throws Exception {
         LabelAtom testLabel = createUniqueLabelAtom();
         RegexNameVerifier verifier = new RegexNameVerifier("test123.*");
         runTest(verifier, "test", testLabel, false, null);
